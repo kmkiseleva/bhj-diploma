@@ -13,7 +13,7 @@ class Account extends Entity {
       url: `${this.URL}/${id}`,
       method: "GET",
       responseType: "json",
-      data: data,
+      data: {},
       callback: callback,
     });
   }
