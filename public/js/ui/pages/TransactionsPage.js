@@ -12,6 +12,15 @@ class TransactionsPage {
     this.registerEvents();
   }
 
+  // Вызывает метод render для отрисовки страницы
+  update() {
+    if (this.lastOptions) {
+      this.render(this.lastOptions);
+      return;
+    }
+    this.render();
+  }
+
   /**
    * Отслеживает нажатие на кнопку удаления транзакции
    * и удаления самого счёта. Внутри обработчика пользуйтесь
@@ -48,7 +57,15 @@ class TransactionsPage {
     if (!isConfirm) {
       return;
     }
-    Account.remove(this.lastOptions, () => App.update());
+    Account.remove(
+      this.lastOptions.account_id,
+      User.current(),
+      (err, response) => {
+        if (response.success) {
+          App.updateWidgets();
+        }
+      }
+    );
     this.clear();
   }
 
@@ -68,11 +85,6 @@ class TransactionsPage {
     Transaction.remove(id, () => App.update());
   }
 
-  // Устанавливает заголовок в элемент .content-title
-  renderTitle(name) {
-    this.element.querySelector(".content-title").textContent = name;
-  }
-
   /**
    * С помощью Account.get() получает название счёта и отображает
    * его через TransactionsPage.renderTitle.
@@ -90,6 +102,40 @@ class TransactionsPage {
     Transaction.list(options, (err, response) => {
       this.renderTransactions(response.data);
     });
+  }
+
+  /**
+   * Очищает страницу. Вызывает
+   * TransactionsPage.renderTransactions() с пустым массивом.
+   * Устанавливает заголовок: «Название счёта»
+   * */
+  clear() {
+    this.renderTransactions([]);
+    this.renderTitle("Название счёта");
+    this.lastOptions = null;
+  }
+
+  // Устанавливает заголовок в элемент .content-title
+  renderTitle(name) {
+    this.element.querySelector(".content-title").textContent = name;
+  }
+
+  /**
+   * Форматирует дату в формате 2019-03-10 03:20:41 (строка)
+   * в формат «10 марта 2019 г. в 03:20»
+   * */
+  formatDate(date) {
+    const thisDate = new Date(date);
+    const formatDay = thisDate.toLocaleDateString("ru", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    const formatTime = thisDate.toLocaleTimeString("ru", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+    return `${formatDay} в ${formatTime}`;
   }
 
   /**
@@ -137,43 +183,5 @@ class TransactionsPage {
     data.forEach((item) => {
       content.insertAdjacentHTML("beforeend", this.getTransactionHTML(item));
     });
-  }
-
-  /**
-   * Форматирует дату в формате 2019-03-10 03:20:41 (строка)
-   * в формат «10 марта 2019 г. в 03:20»
-   * */
-  formatDate(date) {
-    const thisDate = new Date(date);
-    const formatDay = thisDate.toLocaleDateString("ru", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-    const formatTime = thisDate.toLocaleTimeString("ru", {
-      hour: "numeric",
-      minute: "numeric",
-    });
-    return `${formatDay} в ${formatTime}`;
-  }
-
-  // Вызывает метод render для отрисовки страницы
-  update() {
-    if (this.lastOptions) {
-      this.render(this.lastOptions);
-      return;
-    }
-    this.render();
-  }
-
-  /**
-   * Очищает страницу. Вызывает
-   * TransactionsPage.renderTransactions() с пустым массивом.
-   * Устанавливает заголовок: «Название счёта»
-   * */
-  clear() {
-    this.renderTransactions([]);
-    this.renderTitle("Название счёта");
-    this.lastOptions = null;
   }
 }
