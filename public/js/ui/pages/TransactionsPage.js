@@ -51,6 +51,7 @@ class TransactionsPage {
     Account.remove(this.lastOptions, () => App.update());
     this.clear();
   }
+
   /**
    * Удаляет транзакцию (доход или расход). Требует
    * подтверждеия действия (с помощью confirm()).
@@ -149,7 +150,7 @@ class TransactionsPage {
       month: "long",
       year: "numeric",
     });
-    const formatTime = thisDate.toLocaleDateString("ru", {
+    const formatTime = thisDate.toLocaleTimeString("ru", {
       hour: "numeric",
       minute: "numeric",
     });
