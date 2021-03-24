@@ -57,15 +57,9 @@ class TransactionsPage {
     if (!isConfirm) {
       return;
     }
-    Account.remove(
-      this.lastOptions.account_id,
-      User.current(),
-      (err, response) => {
-        if (response.success) {
-          App.updateWidgets();
-        }
-      }
-    );
+    Account.remove(this.lastOptions.account_id, User.current(), () => {
+      App.updateWidgets();
+    });
     this.clear();
   }
 
