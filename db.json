@@ -23,12 +23,6 @@
       "email": "leon@leon",
       "password": "leon",
       "id": "my7bc5rckmlz4lna"
-    },
-    {
-      "name": "Tip",
-      "email": "tip@tip",
-      "password": "tip",
-      "id": "my7bc54ckmnqgf3o"
     }
   ],
   "accounts": [
@@ -198,15 +192,6 @@
       "sum": 300000,
       "type": "expense",
       "user_id": "1"
-    },
-    {
-      "id": "my7bc4z0kmn778jd",
-      "type": "income",
-      "name": "ggg",
-      "sum": 5,
-      "account_id": "undefined",
-      "user_id": "1",
-      "created_at": "2021-03-24T08:41:50.328Z"
     }
   ]
 }
