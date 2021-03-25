@@ -76,7 +76,7 @@ class TransactionsPage {
     if (!isConfirm) {
       return;
     }
-    Transaction.remove(id, () => App.update());
+    Transaction.remove(id, User.current(), () => App.update());
   }
 
   /**
@@ -174,8 +174,10 @@ class TransactionsPage {
    * */
   renderTransactions(data) {
     const content = this.element.querySelector(".content");
-    data.forEach((item) => {
-      content.insertAdjacentHTML("beforeend", this.getTransactionHTML(item));
-    });
+    const transactionsContent = data
+      .map((item) => this.getTransactionHTML(item))
+      .join(" ");
+    content.innerHTML = "";
+    content.insertAdjacentHTML("beforeend", transactionsContent);
   }
 }

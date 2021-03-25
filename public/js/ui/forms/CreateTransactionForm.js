@@ -23,10 +23,7 @@ class CreateTransactionForm extends AsyncForm {
       if (response.success) {
         select.innerHTML = "";
         response.data.forEach((item) => {
-          select.insertAdjacentHTML(
-            "beforeend",
-            `<option value="${item.id}">${item.name}</option>`
-          );
+          select.innerHTML += `<option value="${item.id}">${item.name}</option>`;
         });
       }
     });

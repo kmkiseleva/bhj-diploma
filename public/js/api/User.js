@@ -30,7 +30,7 @@ class User {
     try {
       return JSON.parse(localStorage.getItem("user"));
     } catch (err) {
-      return undefined;
+      return null;
     }
   }
 

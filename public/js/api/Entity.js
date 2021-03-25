@@ -24,11 +24,16 @@ class Entity {
    * на сервер (в зависимости от того, что наследуется от Entity)
    * */
   static create(data, callback) {
+    const id = User.current().id;
+    const modifiedData = {
+      ...data,
+      user_id: id,
+    };
     return createRequest({
       url: this.URL,
       method: "PUT",
       responseType: "json",
-      data: data,
+      data: modifiedData,
       callback: callback,
     });
   }
@@ -37,12 +42,16 @@ class Entity {
    * Удаляет информацию о счёте или доходе/расходе
    * (в зависимости от того, что наследуется от Entity)
    * */
-  static remove(data, callback) {
+  static remove(id = "", data, callback) {
+    const modifiedData = {
+      ...data,
+      id,
+    };
     return createRequest({
       url: this.URL,
       method: "DELETE",
       responseType: "json",
-      data: data,
+      data: modifiedData,
       callback: callback,
     });
   }
